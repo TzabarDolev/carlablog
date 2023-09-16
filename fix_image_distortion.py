@@ -3,10 +3,12 @@
 
 ## this code snippet fixes the issue stated here - https://github.com/carla-simulator/carla/issues/6085.
 
-# patch for resolution bug - image width should be a full multiplication of 64
+1. # patch for resolution bug - image width should be a full multiplication of 64
+# this part should be done online, while creating the images.
 if np.remainder(ImageWidth, 64) != 0:
     ImageWidth = np.ceil(ImageWidth / 64) * 64
 
+2. # this part should be done offline, while processing the images
 def resolution_bugfix(img, ImageWidth):
   if ImageWidth != img.shape[1]:
       height, width = img.shape[:2]
