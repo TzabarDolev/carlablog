@@ -1,3 +1,6 @@
+## The following code is a part of Sensors section at my Carla simulator research blog - https://CarlaSimBlog.wordpress.com.
+## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
+
 ## In the CARLA Python API, you can extract IMU (Inertial Measurement Unit) sensor data from a vehicle.
 ## An IMU sensor provides information about the vehicles linear and angular accelerations, as well as its orientation.
 ## Here's how you can extract IMU sensor data from a vehicle in CARLA
