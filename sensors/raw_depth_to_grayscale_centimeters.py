@@ -1,4 +1,4 @@
-## The following code is a part of Sensors section at my Carla simulator research blog - https://carlablog.carrd.co/.
+## The following code is a part of Sensors section at my Carla simulator research blog - https://CarlaSimBlog.wordpress.com.
 ## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
 
 ## this is a simple and short code for raw depth conversion to grascale depth at centimeters units.
