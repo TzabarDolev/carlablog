@@ -1,4 +1,4 @@
-## The following code is a part of Sensors section at my Carla simulator research blog - https://carlablog.carrd.co/.
+## The following code is a part of Sensors section at my Carla simulator research blog - https://CarlaSimBlog.wordpress.com.
 ## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
 
 ## this specific code is an extended code version for visualize_multiple_sensors which renders the images in a synchronous mode and save images from 3 sensors at the same time (RGB, semantic and depth).
