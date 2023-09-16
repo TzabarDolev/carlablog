@@ -1,0 +1,18 @@
+## The following code is a part of Sensors section at my Carla simulator research blog - https://CarlaSimBlog.wordpress.com.
+## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
+
+## this code snippet fixes the issue stated here - https://github.com/carla-simulator/carla/issues/6085.
+
+# patch for resolution bug - image width should be a full multiplication of 64
+if np.remainder(ImageWidth, 64) != 0:
+    ImageWidth = np.ceil(ImageWidth / 64) * 64
+
+def resolution_bugfix(img, ImageWidth):
+  if ImageWidth != img.shape[1]:
+      height, width = img.shape[:2]
+      left = (width - ImageWidth) // 2
+      right = left + ImageWidth
+      img = img[:, left:right]
+  return img
+
+img = self.resolution_bugfix(img, ImageWidth)
