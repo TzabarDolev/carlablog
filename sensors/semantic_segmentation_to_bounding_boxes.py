@@ -1,4 +1,4 @@
-## The following code is a part of Sensors section at my Carla simulator research blog - https://CarlaSimBlog.wordpress.com.
+## The following code is a part of Sensors section at the Carla simulator research blog - https://carlasimblog.wordpress.com/2023/09/16/visualize-multiple-sensors/.
 ## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
 
 ## At this case, we set a minimum size for and a maximum depth the bounding box.
