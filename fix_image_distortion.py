@@ -1,4 +1,4 @@
-## The following code is a part of Sensors section at my Carla simulator research blog - https://CarlaSimBlog.wordpress.com.
+## The following code is a part of Sensors section at my Carla simulator research blog - https://carlasimblog.wordpress.com/2023/09/16/the-64-division-curse/.
 ## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
 
 ## this code snippet fixes the issue stated here - https://github.com/carla-simulator/carla/issues/6085.
