@@ -1,4 +1,4 @@
-## The following code is a part of Sensors section at my Carla simulator research blog - https://CarlaSimBlog.wordpress.com.
+## The following code is a part of Sensors section at my Carla simulator research blog - https://carlasimblog.wordpress.com/2023/09/16/understanding-imu-sensors-and-their-role-in-autonomous-driving-simulations-with-carla/.
 ## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
 
 ## In the CARLA Python API, you can extract IMU (Inertial Measurement Unit) sensor data from a vehicle.
