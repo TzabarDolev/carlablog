@@ -1,3 +1,6 @@
+## The following code is a part of disparity measurements section at the Carla simulator research blog - https://carlasimblog.wordpress.com/2023/09/20/disparity-in-stereo-cameras-measuring-understanding-and-its-crucial-role/.
+## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
+
 import glob
 import os
 import sys
