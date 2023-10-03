@@ -1,3 +1,7 @@
+## The following code is a part of object detection metrics post at the Carla simulator research blog - https://carlasimblog.wordpress.com/2023/10/03/object-detection-metrics-in-computer-vision/.
+## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
+
+
 import os
 import glob
 import numpy as np
