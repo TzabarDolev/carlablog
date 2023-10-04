@@ -1,3 +1,6 @@
+## The following code is a part of render off screen post at the Carla simulator research blog - https://carlasimblog.wordpress.com/2023/10/04/rendering-images-off-screen-in-the-carla-simulator/.
+## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
+
 ## First, you need to import the necessary modules
 import carla
 import time
