@@ -51,7 +51,8 @@ vehicle_blueprint = world.get_blueprint_library().find('vehicle.audi.tt')
 target_velocity = 10.0  # Adjust this value as needed
 
 # Spawn the vehicle
-spawn_point = carla.Transform(carla.Location(x=10, y=-270, z=0.5), carla.Rotation(pitch=0, yaw=90, roll=0))
+random_location = random.choice(world.get_map().get_spawn_points())
+spawn_point = carla.Transform(carla.Location(random_location.location), carla.Rotation(pitch=0, yaw=0, roll=0))
 vehicle = world.spawn_actor(vehicle_blueprint, spawn_point)
 vehicle.apply_control(carla.VehicleControl(throttle=target_velocity, steer=0))
 
