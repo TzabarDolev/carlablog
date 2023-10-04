@@ -33,7 +33,7 @@ argparser.set_defaults(sync=True)
 argparser.add_argument(
     '--res',
     metavar='WIDTHxHEIGHT',
-    default='960x2000',
+    default='1920x1080',
     help='window resolution (default: 1284x480)')
 
 args = argparser.parse_args()
