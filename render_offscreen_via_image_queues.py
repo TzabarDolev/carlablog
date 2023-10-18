@@ -1,4 +1,4 @@
-## The following code is a part of render off screen via image queues post at the Carla simulator research blog - .
+## The following code is a part of render off screen via image queues post at the Carla simulator research blog - https://carlasimblog.wordpress.com/2023/10/18/computer-queues-and-their-use-in-carla-simulator-to-render-large-images-without-image-drops/.
 ## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
 
 
