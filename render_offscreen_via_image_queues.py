@@ -14,13 +14,13 @@ IND = 0
 
 
 def process_image_rgb(image):
-    image.save_to_disk(fr'C:\Users\algo2\Documents\data\test\rgb\{IND}_rgb.png')
+    image.save_to_disk(fr'data\test\rgb\{IND}_rgb.png')
 
 def process_image_semantic(image):
-    image.save_to_disk(fr'C:\Users\algo2\Documents\data\test\semantic\{IND}_semantic.png')
+    image.save_to_disk(fr'data\test\semantic\{IND}_semantic.png')
 
 def process_image_depth(image):
-    image.save_to_disk(fr'C:\Users\algo2\Documents\data\test\depth\{IND}_depth.png')
+    image.save_to_disk(fr'data\test\depth\{IND}_depth.png')
 
 if __name__ == '__main__':
 
