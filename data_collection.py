@@ -255,6 +255,7 @@ def run_simulation(args, client):
     vehicle_list = []
     ind = 0
     car_speed = 30  # m/s
+    car_throttle = 1
     steer = 0
     autopilot_enabled  = True
 
@@ -333,13 +334,13 @@ def run_simulation(args, client):
                         steer += 0.0002
                         print(fr'steer: {steer}')
                         vehicle.apply_control(
-                            carla.VehicleControl(throttle=car_speed, steer=steer))
+                            carla.VehicleControl(throttle=car_throttle, steer=steer))
 
                     if event.key == K_a:
                         steer -= 0.0002
                         print(fr'steer: {steer}')
                         vehicle.apply_control(
-                            carla.VehicleControl(throttle=car_speed, steer=steer))
+                            carla.VehicleControl(throttle=car_throttle, steer=steer))
 
                     if event.key == K_LEFT:
                         # Get the vehicle's transform
@@ -390,7 +391,7 @@ def run_simulation(args, client):
                         steer = 0
                         print(fr'steer: {steer}')
                         vehicle.apply_control(
-                            carla.VehicleControl(throttle=car_speed, steer=steer))
+                            carla.VehicleControl(throttle=car_throttle, steer=steer))
 
                     if event.key == K_p:
                         autopilot_enabled = not autopilot_enabled
