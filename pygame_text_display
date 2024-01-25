@@ -1,4 +1,4 @@
-## The following code is a code snippet at the Carla simulator research blog - TBD.
+## The following code is a code snippet at the Carla simulator research blog - https://carlasimblog.wordpress.com/2024/01/25/pygame-plotting-improving-driver-user-experience/.
 ## Feel free to show your support via requested, suggestions and interesting ideas for future research material.
 
 ## This code will display two texts, "Hello, Pygame!" and "Second line of text," on the top-left area of the screen for 5 seconds. 
