@@ -21,7 +21,6 @@ import random
 import time
 import numpy as np
 
-
 try:
     import pygame
     from pygame.locals import KMOD_CTRL
@@ -67,6 +66,7 @@ try:
 except ImportError:
     raise RuntimeError('cannot import pygame, make sure pygame package is installed')
 
+
 class CustomTimer:
     def __init__(self):
         try:
@@ -76,6 +76,7 @@ class CustomTimer:
 
     def time(self):
         return self.timer()
+
 
 class DisplayManager:
     def __init__(self, grid_size, window_size):
@@ -91,7 +92,7 @@ class DisplayManager:
         return [int(self.window_size[0]), int(self.window_size[1])]
 
     def get_display_size(self):
-        return [int(self.window_size[0]/self.grid_size[1]), int(self.window_size[1]/self.grid_size[0])]
+        return [int(self.window_size[0] / self.grid_size[1]), int(self.window_size[1] / self.grid_size[0])]
 
     def get_display_offset(self, gridPos):
         dis_size = self.get_display_size()
@@ -118,6 +119,7 @@ class DisplayManager:
 
     def render_enabled(self):
         return self.display != None
+
 
 class SensorManager:
     def __init__(self, world, display_man, sensor_type, transform, attached, sensor_options, display_pos):
@@ -165,6 +167,21 @@ class SensorManager:
 
             return camera
 
+        elif sensor_type == 'InstanceCamera':
+            camera_bp = self.world.get_blueprint_library().find('sensor.camera.instance_segmentation')
+            disp_size = self.display_man.get_display_size()
+            camera_bp.set_attribute('image_size_x', str(disp_size[0]))
+            camera_bp.set_attribute('image_size_y', str(disp_size[1]))
+            camera_bp.set_attribute('fov', str(14))
+
+            for key in sensor_options:
+                camera_bp.set_attribute(key, sensor_options[key])
+
+            camera = self.world.spawn_actor(camera_bp, transform, attach_to=attached)
+            camera.listen(self.save_instance_image)
+
+            return camera
+
         elif sensor_type == 'DepthCamera':
             camera_bp = self.world.get_blueprint_library().find('sensor.camera.depth')
             disp_size = self.display_man.get_display_size()
@@ -179,7 +196,7 @@ class SensorManager:
             camera.listen(self.save_depth_image)
 
             return camera
-        
+
         else:
             return None
 
@@ -199,7 +216,7 @@ class SensorManager:
             self.surface = pygame.surfarray.make_surface(array.swapaxes(0, 1))
 
         t_end = self.timer.time()
-        self.time_processing += (t_end-t_start)
+        self.time_processing += (t_end - t_start)
         self.tics_processing += 1
         image.save_to_disk('_out/multiple_sensors/raw/%08d_rgb.png' % image.frame)
 
@@ -235,8 +252,25 @@ class SensorManager:
         t_end = self.timer.time()
         self.time_processing += (t_end - t_start)
         self.tics_processing += 1
-        image.save_to_disk('_out/multiple_sensors/raw/%08d_semantic.png' % image.frame, carla.ColorConverter.CityScapesPalette)
+        image.save_to_disk('_out/multiple_sensors/raw/%08d_semantic.png' % image.frame,
+                           carla.ColorConverter.CityScapesPalette)
 
+    def save_instance_image(self, image):
+        t_start = self.timer.time()
+
+        image.convert(carla.ColorConverter.Raw)
+        array = np.frombuffer(image.raw_data, dtype=np.dtype("uint8"))
+        array = np.reshape(array, (image.height, image.width, 4))
+        array = array[:, :, :3]
+        array = array[:, :, ::-1]
+
+        if self.display_man.render_enabled():
+            self.surface = pygame.surfarray.make_surface(array.swapaxes(0, 1))
+
+        t_end = self.timer.time()
+        self.time_processing += (t_end - t_start)
+        self.tics_processing += 1
+        image.save_to_disk('_out/multiple_sensors/raw/%08d_instance.png' % image.frame)
 
     def render(self):
         if self.surface is not None:
@@ -246,6 +280,7 @@ class SensorManager:
     def destroy(self):
         self.sensor.destroy()
 
+
 def run_simulation(args, client):
     """This function performed one test run using the args parameters
     and connecting to the carla client passed.
@@ -254,15 +289,13 @@ def run_simulation(args, client):
     display_manager = None
     vehicle_list = []
     ind = 0
-    car_speed = 30  # m/s
     car_throttle = 1
     steer = 0
-    autopilot_enabled  = True
+    autopilot_enabled = True
 
     try:
         world = client.get_world()
         original_settings = world.get_settings()
-
 
         # Instanciating the vehicle to which we attached the sensors
         bp = world.get_blueprint_library().filter('charger_2020')[0]
@@ -272,19 +305,24 @@ def run_simulation(args, client):
 
         # Display Manager organize all the sensors an its display in a window
         # If can easily configure the grid and the total window size
-        display_manager = DisplayManager(grid_size=[1, 3], window_size=[args.width*3, args.height])
+        display_manager = DisplayManager(grid_size=[1, 4], window_size=[args.width * 4, args.height])
 
         # Then, SensorManager can be used to spawn RGBCamera, LiDARs and SemanticLiDARs as needed
-        # and assign each of them to a grid position, 
-        SensorManager(world, display_manager, 'RGBCamera', carla.Transform(carla.Location(x=2, z=1.7), carla.Rotation(yaw=0)),
+        # and assign each of them to a grid position,
+        SensorManager(world, display_manager, 'RGBCamera',
+                      carla.Transform(carla.Location(x=2, z=1.7), carla.Rotation(yaw=0)),
                       vehicle, {}, display_pos=[0, 0])
-        SensorManager(world, display_manager, 'DepthCamera', carla.Transform(carla.Location(x=2, z=1.7), carla.Rotation(yaw=0)),
+        SensorManager(world, display_manager, 'DepthCamera',
+                      carla.Transform(carla.Location(x=2, z=1.7), carla.Rotation(yaw=0)),
                       vehicle, {}, display_pos=[0, 1])
-        SensorManager(world, display_manager, 'SemanticCamera', carla.Transform(carla.Location(x=2, z=1.7), carla.Rotation(yaw=+0)),
+        SensorManager(world, display_manager, 'SemanticCamera',
+                      carla.Transform(carla.Location(x=2, z=1.7), carla.Rotation(yaw=+0)),
                       vehicle, {}, display_pos=[0, 2])
+        SensorManager(world, display_manager, 'InstanceCamera',
+                      carla.Transform(carla.Location(x=2, z=1.7), carla.Rotation(yaw=+0)),
+                      vehicle, {}, display_pos=[0, 3])
 
-
-        #Simulation loop
+        # Simulation loop
         call_exit = False
         while True:
             # Carla Tick
@@ -303,6 +341,9 @@ def run_simulation(args, client):
                 vehicle.set_transform(transform)
                 vehicle_list = []
                 vehicle_list.append(vehicle)
+
+            if np.mod(ind, 100) == 0:
+                sys.exit()
 
             # Render received data
             display_manager.render()
@@ -352,7 +393,7 @@ def run_simulation(args, client):
 
                         # Calculate pitch, yaw, and roll angles
                         pitch, yaw, roll = rotation.pitch, rotation.yaw, rotation.roll
-                        desired_rotation = carla.Rotation(pitch=pitch, yaw=yaw-5,
+                        desired_rotation = carla.Rotation(pitch=pitch, yaw=yaw - 5,
                                                           roll=roll)
                         desired_transform = carla.Transform(location, desired_rotation)
                         vehicle.set_transform(desired_transform)
@@ -367,7 +408,7 @@ def run_simulation(args, client):
 
                         # Calculate pitch, yaw, and roll angles
                         pitch, yaw, roll = rotation.pitch, rotation.yaw, rotation.roll
-                        desired_rotation = carla.Rotation(pitch=pitch, yaw=yaw+5,
+                        desired_rotation = carla.Rotation(pitch=pitch, yaw=yaw + 5,
                                                           roll=roll)
                         desired_transform = carla.Transform(location, desired_rotation)
                         vehicle.set_transform(desired_transform)
@@ -382,7 +423,7 @@ def run_simulation(args, client):
 
                         # Calculate pitch, yaw, and roll angles
                         pitch, yaw, roll = rotation.pitch, rotation.yaw, rotation.roll
-                        desired_rotation = carla.Rotation(pitch=pitch, yaw=yaw+180,
+                        desired_rotation = carla.Rotation(pitch=pitch, yaw=yaw + 180,
                                                           roll=roll)
                         desired_transform = carla.Transform(location, desired_rotation)
                         vehicle.set_transform(desired_transform)
@@ -415,7 +456,6 @@ def run_simulation(args, client):
         world.apply_settings(original_settings)
 
 
-
 def main():
     argparser = argparse.ArgumentParser(
         description='CARLA Sensor tutorial')
@@ -443,7 +483,7 @@ def main():
     argparser.add_argument(
         '--res',
         metavar='WIDTHxHEIGHT',
-        default='960x1236',
+        default='512x512',
         help='window resolution (default: 1284x480)')
 
     args = argparser.parse_args()
@@ -461,7 +501,5 @@ def main():
 
 
 if __name__ == '__main__':
-
     # while True:
     main()
-
